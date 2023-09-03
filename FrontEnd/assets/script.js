@@ -5,4 +5,6 @@ async function worksStart() {
   works();
 
   await categories();
+
+  connection();
 }

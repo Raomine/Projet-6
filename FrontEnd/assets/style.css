@@ -322,3 +322,36 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 20px 200px;
 }
+
+#edit {
+	align-items: center;
+	background: black;
+	gap: 20px;
+	height: 60px;
+	justify-content: center;
+}
+
+.edit__mod {
+	color: white;
+}
+
+.edit__pub {
+	background: white;
+	border-radius: 60px;
+	color: black;
+	cursor: pointer;
+	padding: 11px 23px;
+}
+
+.modify {
+	cursor: pointer;
+	margin-top: 15px;
+	gap: 10px;
+}
+
+.modifytwo {
+	cursor: pointer;
+	padding-top: 10px;
+	padding-left: 30px;
+	gap: 10px;
+}

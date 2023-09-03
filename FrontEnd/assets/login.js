@@ -3,7 +3,6 @@ const form = document.getElementById("login__form");
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  // Création des variables concernant le formulaire
   const email = document.querySelector("#email");
   const password = document.querySelector("#password");
 
