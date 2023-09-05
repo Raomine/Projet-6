@@ -15,6 +15,49 @@
 </head>
 
 <body>
+	<div class="modal">
+		<div class="modal__open activate"></div>
+		<div class="firstModal">
+			<span class="firstModal__close activate">
+				<i class="fa-solid fa-xmark"></i>
+			</span>
+			<h2 class="firstModal__title">Galerie photo</h2>
+			<div class="firstModal__gallery">
+
+			</div>
+			<div class="firstModal__bar"></div>
+			<button class="firstModal__button">Ajouter une photo</button>
+			<p class="firstModal__supp">Supprimer la galerie</p>
+		</div>
+		<div class="sndModal">
+			<span class="sndModal__arrow">
+				<i class="fa-solid fa-arrow-left"></i>
+			</span>
+			<span class="sndModal__close activate">
+				<i class="fa-solid fa-xmark"></i>
+			</span>
+			<h2 class="sndModal__title">Ajout photo</h2>
+			<form class="sndModal__form">
+				<span class="sndModal__img">
+					<span class="sndModal__icon">
+						<i class="fa-regular fa-image"></i>
+					</span>
+					<input id="photo" type="file" accept="image/jpg, image/png">
+					<label for="photo" class="sndModal__photo">+ Ajouter photo</label>
+					<span class="sndModal__mo">jpg, png : 4mo max</span>
+				</span>
+				<label for="title">Titre</label>
+				<input id="title" type="text">
+				<label for="categories">Catégorie</label>
+				<select id="categories">
+
+				</select>
+				<span class="sndModal__error"></span>
+				<span class="sndModal__bar"></span>
+				<input type="submit" value="Valider">
+			</form>
+		</div>
+	</div>
 	<div id="edit">
 		<p class="edit__mod"><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>
 		<p class="edit__pub">Publier les changements</p>
@@ -86,6 +129,7 @@
 	</footer>
 	<script src="./assets/api.js"></script>
 	<script src="./assets/edit.js"></script>
+	<script src="./assets/modal.js"></script>
 	<script src="./assets/script.js"></script>
 </body>
 
