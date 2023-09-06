@@ -1,3 +1,4 @@
+const host = "http://localhost:5678/api";
 const form = document.getElementById("login__form");
 
 form.addEventListener("submit", async (event) => {
@@ -12,7 +13,7 @@ form.addEventListener("submit", async (event) => {
   };
 
   try {
-    const reponse = await fetch("http://localhost:5678/api/users/login", {
+    const reponse = await fetch(`${host}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

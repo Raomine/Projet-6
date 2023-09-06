@@ -4,7 +4,9 @@ window.addEventListener("DOMContentLoaded", (event) => {
 async function worksStart() {
   works();
 
-  await categories();
+  worksModal();
 
   connection();
+
+  await categories();
 }

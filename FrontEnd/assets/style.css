@@ -425,6 +425,31 @@ footer nav ul {
 	max-width: 78px;
 }
 
+.move {
+	display: flex;
+	align-content: center;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 17px;
+	height: 21px;
+	background: black;
+	color: white;
+	position: relative;
+	top: -136px;
+	left: 36px;
+}
+
+.delete {
+	background: black;
+	border: none;
+	color: white;
+	cursor: pointer;
+	padding: 2.5px 3px;
+	position: relative;
+	top: -115px;
+	left: 56px;
+}
+
 .firstModal__bar {
 	border: 1px solid #B3B3B3;
 	max-width: 420px;

@@ -1,5 +1,6 @@
+const host = "http://localhost:5678/api";
 async function works() {
-  await fetch("http://localhost:5678/api/works")
+  await fetch(`${host}/works`)
     .then((response) => response.json())
     .then((dataWorks) => {
       const gallery = document.querySelector(".gallery");
@@ -22,7 +23,7 @@ async function works() {
 }
 
 async function categories() {
-  await fetch("http://localhost:5678/api/categories")
+  await fetch(`${host}/categories`)
     .then((response) => response.json())
     .then((dataCategories) => {
       const filters = document.querySelector(".filters");
