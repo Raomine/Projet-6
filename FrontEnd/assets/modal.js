@@ -223,6 +223,7 @@ async function validationSndModal() {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
+      Accept: "application/json",
     },
     body: formData,
   })
@@ -232,9 +233,8 @@ async function validationSndModal() {
       }
       throw new Error("Erreur lors du transfert");
     })
-    .then((data) => {
+    .then(() => {
       gallery.innerHTML = "";
-      firstModalGallery.innerHTML = "";
       works();
       worksModal();
       sndValidate.classList.remove("active");
