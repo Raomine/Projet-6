@@ -65,7 +65,7 @@ async function worksModal() {
         deleteB.addEventListener("click", async (event) => {
           event.preventDefault();
           if (confirm("Voulez-vous supprimer le projet ?")) {
-            const id = cardModal.id;
+            const id = galleryCard.id;
             const token = localStorage.getItem("token");
 
             try {
@@ -78,7 +78,7 @@ async function worksModal() {
               });
 
               if (response.ok) {
-                getWorks();
+                works();
                 worksModal();
               } else {
                 alert("Echec de la suppresion du projet...");
@@ -125,12 +125,12 @@ async function suppImg(event) {
   }
 }
 
-const sndForm = document.querySelector("sndModal__form");
+const sndForm = document.querySelector(".sndModal__form");
 const sndInput = document.getElementById("photo");
 const sndTitle = document.getElementById("title");
 const sndCategories = document.getElementById("categories");
-const sndValidate = document.querySelector("validate");
-let error = document.querySelector("sndModal__error");
+const sndValidate = document.querySelector(".validate");
+const sndError = document.querySelector(".sndModal__error");
 
 sndInput.addEventListener("change", selectFile);
 
@@ -157,12 +157,11 @@ function selectFile(event) {
   label.style.opacity = "0";
 }
 
-// Reset formulaire
 function resetForm() {
-  document.getElementById("sndModal__form").reset();
+  sndForm.reset();
 
   const sndModalImg = document.querySelector(".sndModal__img");
-  const image = document.querySelector("previewImage");
+  const image = document.querySelector(".previewImage");
   if (image) {
     sndModalImg.removeChild(image);
   }
@@ -170,3 +169,84 @@ function resetForm() {
   const label = document.querySelector(".sndModal__photo");
   label.style.opacity = "1";
 }
+
+fetch("http://localhost:5678/api/categories")
+  .then((response) => response.json())
+  .then((dataCategories) => {
+    const categories = document.getElementById("categories");
+
+    const emptyOption = document.createElement("option");
+    categories.appendChild(emptyOption);
+
+    dataCategories.forEach((category) => {
+      const option = document.createElement("option");
+      option.innerText = category.name;
+      option.value = category.id;
+      categories.appendChild(option);
+    });
+  });
+
+sndInput.addEventListener("input", greenButton);
+sndTitle.addEventListener("input", greenButton);
+sndCategories.addEventListener("input", greenButton);
+
+function greenButton() {
+  if (
+    sndTitle.value !== "" &&
+    sndCategories.value !== "" &&
+    sndInput.value !== ""
+  ) {
+    sndValidate.classList.toggle("active");
+    sndError.style.display = "none";
+  } else {
+    sndError.innerText = "Veuillez renseigner tous les champs";
+  }
+}
+
+async function validationSndModal() {
+  const sndInput = document.getElementById("photo").files[0];
+  const sndTitle = document.getElementById("title").value;
+  const sndCategories = document.getElementById("categories").value;
+
+  const gallery = document.querySelector(".gallery");
+  const firstModalGallery = document.querySelector(".firtModal__gallery");
+  const modal = document.querySelector(".modal");
+
+  let formData = new FormData();
+  formData.append("image", sndInput);
+  formData.append("title", sndTitle);
+  formData.append("category", sndCategories);
+
+  const token = localStorage.getItem("token");
+
+  await fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error("Erreur lors du transfert");
+    })
+    .then((data) => {
+      gallery.innerHTML = "";
+      firstModalGallery.innerHTML = "";
+      works();
+      worksModal();
+      sndValidate.classList.remove("active");
+      modal.classList.remove("active");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+sndForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  validationSndModal();
+  resetForm();
+});

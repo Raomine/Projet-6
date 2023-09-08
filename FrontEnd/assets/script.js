@@ -6,7 +6,7 @@ async function worksStart() {
 
   worksModal();
 
-  connection();
-
   await categories();
+
+  connection();
 }
