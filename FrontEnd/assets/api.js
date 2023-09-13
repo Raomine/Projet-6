@@ -1,74 +1,77 @@
 const host = "http://localhost:5678/api";
+
 async function works() {
-  await fetch(`${host}/works`)
-    .then((response) => response.json())
-    .then((dataWorks) => {
-      const gallery = document.querySelector(".gallery");
-      gallery.innerHTML = "";
-      dataWorks.forEach((work) => {
-        const card = document.createElement("figure");
-        const cardImg = document.createElement("img");
-        const cardTitle = document.createElement("h5");
+  const response = await fetch(`${host}/works`);
+  const dataWorks = await response.json();
 
-        cardImg.src = work.imageUrl;
-        cardImg.alt = work.title;
-        cardImg.setAttribute("category", work.categoryId);
-        cardTitle.innerText = work.title;
+  const gallery = document.querySelector(".gallery");
+  gallery.innerHTML = "";
 
-        card.appendChild(cardImg);
-        card.appendChild(cardTitle);
-        gallery.appendChild(card);
-      });
-    });
+  dataWorks.forEach((work) => {
+    const card = document.createElement("figure");
+    const cardImg = document.createElement("img");
+    const cardTitle = document.createElement("h5");
+
+    cardImg.src = work.imageUrl;
+    cardImg.alt = work.title;
+    cardImg.setAttribute("category", work.categoryId);
+    cardTitle.innerText = work.title;
+
+    card.appendChild(cardImg);
+    card.appendChild(cardTitle);
+    gallery.appendChild(card);
+  });
 }
 
 async function categories() {
-  await fetch(`${host}/categories`)
-    .then((response) => response.json())
-    .then((dataCategories) => {
-      const filters = document.querySelector(".filters");
+  const response = await fetch(`${host}/categories`);
+  const dataCategories = await response.json();
 
-      const allF = document.createElement("p");
-      allF.textContent = "Tous";
-      allF.classList.add("filtersN");
-      allF.classList.add("filterA");
-      filters.appendChild(allF);
+  const filters = document.querySelector(".filters");
+  filters.innerHTML = "";
 
-      dataCategories.forEach((category) => {
-        const filtersType = document.createElement("p");
-        filtersType.innerText = category.name;
-        filtersType.id = category.id;
-        filtersType.classList.add("filtersN");
-        filters.appendChild(filtersType);
-      });
+  const createFilter = (text, id = "", isAllFilter = false) => {
+    const filter = document.createElement("p");
+    filter.textContent = text;
+    id !== "" && (filter.id = id);
+    filter.classList.add("filtersN");
+    isAllFilter && filter.classList.add("filterA");
+    return filter;
+  };
 
-      filters.querySelectorAll("p").forEach((filter) => {
-        filter.addEventListener("click", function () {
-          const id = this.id;
-          document.querySelectorAll(".gallery img").forEach((image) => {
-            if (image.getAttribute("category") === id) {
-              image.parentElement.style.display = "block";
-            } else {
-              image.parentElement.style.display = "none";
-            }
-          });
-        });
-      });
+  const allFilter = createFilter("Tous", "", true);
+  filters.appendChild(allFilter);
 
-      allF.addEventListener("click", function () {
-        document.querySelectorAll(".gallery img").forEach((image) => {
-          image.parentElement.style.display = "block";
-        });
-      });
+  dataCategories.forEach((category) => {
+    const categoryFilter = createFilter(category.name, category.id);
+    filters.appendChild(categoryFilter);
+  });
 
-      const elements = filters.querySelectorAll("p");
-      elements.forEach((element) => {
-        element.addEventListener("click", () => {
-          elements.forEach((element) => {
-            element.classList.remove("filterA");
-          });
-          element.classList.add("filterA");
-        });
+  const galleryImages = document.querySelectorAll(".gallery img");
+
+  filters.querySelectorAll("p").forEach((filter) => {
+    filter.addEventListener("click", function () {
+      const id = this.id;
+      galleryImages.forEach((image) => {
+        image.parentElement.style.display =
+          image.getAttribute("category") === id ? "block" : "none";
       });
     });
+  });
+
+  allFilter.addEventListener("click", function () {
+    galleryImages.forEach((image) => {
+      image.parentElement.style.display = "block";
+    });
+  });
+
+  const filterElements = filters.querySelectorAll("p");
+  filterElements.forEach((element) => {
+    element.addEventListener("click", () => {
+      filterElements.forEach((element) => {
+        element.classList.remove("filterA");
+      });
+      element.classList.add("filterA");
+    });
+  });
 }

@@ -4,16 +4,16 @@ const form = document.getElementById("login__form");
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const email = document.querySelector("#email");
-  const password = document.querySelector("#password");
+  const { value: email } = document.querySelector("#email");
+  const { value: password } = document.querySelector("#password");
 
   const user = {
-    email: email.value,
-    password: password.value,
+    email,
+    password,
   };
 
   try {
-    const reponse = await fetch(`${host}/users/login`, {
+    const response = await fetch(`${host}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,14 +21,13 @@ form.addEventListener("submit", async (event) => {
       },
       body: JSON.stringify(user),
     });
-    if (reponse.ok) {
-      const data = await reponse.json();
-      const token = data.token;
 
+    if (response.ok) {
+      const { token } = await response.json();
       localStorage.setItem("token", token);
       window.location.href = "index.html";
     } else {
-      alert("E-mail ou mot de passe incorrectes");
+      alert("E-mail ou mot de passe incorrect");
     }
   } catch (error) {}
 });

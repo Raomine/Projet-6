@@ -1,12 +1,6 @@
-window.addEventListener("DOMContentLoaded", (event) => {
-  worksStart();
-});
-async function worksStart() {
-  works();
-
+window.addEventListener("DOMContentLoaded", async () => {
+  await works();
   worksModal();
-
   await categories();
-
   connection();
-}
+});

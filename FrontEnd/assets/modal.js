@@ -27,7 +27,6 @@ function backFirstModal() {
 }
 
 async function worksModal() {
-  const host = "http://localhost:5678/api";
   fetch(`${host}/works`)
     .then((response) => response.json())
     .then((dataWorksModal) => {
@@ -170,7 +169,7 @@ function resetForm() {
   label.style.opacity = "1";
 }
 
-fetch("http://localhost:5678/api/categories")
+fetch(`${host}/categories`)
   .then((response) => response.json())
   .then((dataCategories) => {
     const categories = document.getElementById("categories");
@@ -219,7 +218,7 @@ async function validationSndModal() {
 
   const token = localStorage.getItem("token");
 
-  await fetch("http://localhost:5678/api/works", {
+  await fetch(`${host}/works`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
