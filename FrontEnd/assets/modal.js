@@ -206,16 +206,12 @@ async function validationSndModal() {
   const sndInput = document.getElementById("photo").files[0];
   const sndTitle = document.getElementById("title").value;
   const sndCategories = document.getElementById("categories").value;
-
   const gallery = document.querySelector(".gallery");
-  const firstModalGallery = document.querySelector(".firtModal__gallery");
   const modal = document.querySelector(".modal");
-
   let formData = new FormData();
   formData.append("image", sndInput);
   formData.append("title", sndTitle);
   formData.append("category", sndCategories);
-
   const token = localStorage.getItem("token");
 
   await fetch(`${host}/works`, {
