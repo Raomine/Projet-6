@@ -1,6 +1,6 @@
 const host = "http://localhost:5678/api";
 
-async function works() {
+async function getWorks() {
   const response = await fetch(`${host}/works`);
   const dataWorks = await response.json();
 
@@ -23,7 +23,7 @@ async function works() {
   });
 }
 
-async function categories() {
+async function getCategories() {
   const response = await fetch(`${host}/categories`);
   const dataCategories = await response.json();
 

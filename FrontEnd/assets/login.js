@@ -1,7 +1,7 @@
 const host = "http://localhost:5678/api";
-const form = document.getElementById("login__form");
+const loginForm = document.getElementById("login__form");
 
-form.addEventListener("submit", async (event) => {
+loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const { value: email } = document.querySelector("#email");

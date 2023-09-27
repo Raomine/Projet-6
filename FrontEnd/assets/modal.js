@@ -1,32 +1,47 @@
 const modal = document.querySelector(".modal");
 const activate = document.querySelectorAll(".activate");
 const firstModal = document.querySelector(".firstModal");
-const sndModal = document.querySelector(".sndModal");
+const secondModal = document.querySelector(".sndModal");
 
 activate.forEach((activate) =>
-  activate.addEventListener("click", openCloseModal)
+  activate.addEventListener("click", openAndCloseModal)
 );
-function openCloseModal() {
+function openAndCloseModal() {
   modal.classList.toggle("active");
   firstModal.style.display = "flex";
-  sndModal.style.display = "none";
+  secondModal.style.display = "none";
 }
 
-const nextModal = document.querySelector(".firstModal__button");
-nextModal.addEventListener("click", openNextModal);
+function resetForm() {
+  secondModalForm.reset();
+
+  const secondModalImg = document.querySelector(".sndModal__img");
+  const image = document.querySelector(".previewImage");
+  if (image) {
+    secondModalImg.removeChild(image);
+  }
+
+  const label = document.querySelector(".sndModal__photo");
+  label.style.opacity = "1";
+  secondModalError.innerHTML = "";
+}
+
+const addImgButton = document.querySelector(".firstModal__button");
+addImgButton.addEventListener("click", openNextModal);
 function openNextModal() {
   firstModal.style.display = "none";
-  sndModal.style.display = "flex";
+  secondModal.style.display = "flex";
+  resetForm();
 }
 
-const backModal = document.querySelector(".sndModal__arrow");
-backModal.addEventListener("click", backFirstModal);
+const secondModalArrow = document.querySelector(".sndModal__arrow");
+secondModalArrow.addEventListener("click", backFirstModal);
 function backFirstModal() {
   firstModal.style.display = "flex";
-  sndModal.style.display = "none";
+  secondModal.style.display = "none";
 }
 
-async function worksModal() {
+async function getWorksModal() {
   fetch(`${host}/works`)
     .then((response) => response.json())
     .then((dataWorksModal) => {
@@ -44,24 +59,25 @@ async function worksModal() {
         galleryImg.setAttribute("category", workModal.categoryId);
         galleryTxt.innerText = "éditer";
 
-        const move = document.createElement("span");
-        move.classList.add("move");
-        move.innerHTML = '<i class="fa-solid fa-up-down-left-right"></i>';
+        const iconMoveWork = document.createElement("span");
+        iconMoveWork.classList.add("move");
+        iconMoveWork.innerHTML =
+          '<i class="fa-solid fa-up-down-left-right"></i>';
 
-        const deleteB = document.createElement("button");
-        deleteB.type = "submit";
-        deleteB.id = "delete";
-        deleteB.classList.add("delete");
-        deleteB.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+        const deleteWorkButton = document.createElement("button");
+        deleteWorkButton.type = "submit";
+        deleteWorkButton.id = "delete";
+        deleteWorkButton.classList.add("delete");
+        deleteWorkButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
 
         galleryCard.appendChild(galleryImg);
         galleryCard.appendChild(galleryTxt);
-        galleryCard.appendChild(deleteB);
-        galleryCard.appendChild(move);
+        galleryCard.appendChild(deleteWorkButton);
+        galleryCard.appendChild(iconMoveWork);
 
         gallery.appendChild(galleryCard);
 
-        deleteB.addEventListener("click", async (event) => {
+        deleteWorkButton.addEventListener("click", async (event) => {
           event.preventDefault();
           if (confirm("Voulez-vous supprimer le projet ?")) {
             const id = galleryCard.id;
@@ -77,8 +93,8 @@ async function worksModal() {
               });
 
               if (response.ok) {
-                works();
-                worksModal();
+                getWorks();
+                getWorksModal();
               } else {
                 alert("Echec de la suppresion du projet...");
               }
@@ -93,19 +109,19 @@ async function worksModal() {
     });
 }
 
-const supp = document.querySelector(".firstModal__supp");
-supp.addEventListener("click", suppImg);
+const deleteAll = document.querySelector(".firstModal__supp");
+deleteAll.addEventListener("click", deleteAllWorks);
 
-async function suppImg(event) {
+async function deleteAllWorks(event) {
   event.preventDefault();
   if (confirm("Voulez-vous supprimer tous les projets ?")) {
     let allImg = document.querySelectorAll(".firstModal__gallery figure");
 
     for (let i = 0; i < allImg.length; i++) {
-      const idProject = allImg[i].id;
+      const idWork = allImg[i].id;
       const token = localStorage.getItem("token");
 
-      let response = await fetch(`${host}/works/${idProject}`, {
+      let response = await fetch(`${host}/works/${idWork}`, {
         method: "DELETE",
         headers: {
           accept: "*/*",
@@ -113,8 +129,8 @@ async function suppImg(event) {
         },
       });
       if (response.ok) {
-        works();
-        worksModal();
+        getWorks();
+        getWorksModal();
       } else {
         alert("Echec de la suppresion de la galerie...");
       }
@@ -124,49 +140,36 @@ async function suppImg(event) {
   }
 }
 
-const sndForm = document.querySelector(".sndModal__form");
-const sndInput = document.getElementById("photo");
-const sndTitle = document.getElementById("title");
-const sndCategories = document.getElementById("categories");
-const sndValidate = document.querySelector(".validate");
-const sndError = document.querySelector(".sndModal__error");
+const secondModalForm = document.querySelector(".sndModal__form");
+const secondModalFile = document.getElementById("photo");
+const secondModalTitle = document.getElementById("title");
+const secondModalCategories = document.getElementById("categories");
+const secondModalValidationButton = document.querySelector(".validate");
+const secondModalError = document.querySelector(".sndModal__error");
 
-sndInput.addEventListener("change", selectFile);
+secondModalFile.addEventListener("change", selectFile);
 
 function selectFile(event) {
   event.preventDefault();
 
   const reader = new FileReader();
-  reader.readAsDataURL(sndInput.files[0]);
+  reader.readAsDataURL(secondModalFile.files[0]);
 
   reader.addEventListener("load", () => {
     image.src = reader.result;
   });
 
-  const sndModalImg = document.querySelector(".sndModal__img");
+  const secondModalImg = document.querySelector(".sndModal__img");
   const image = document.createElement("img");
 
   image.setAttribute("class", "previewImage");
   image.style.width = "140px";
   image.style.height = "183px";
 
-  sndModalImg.appendChild(image);
+  secondModalImg.appendChild(image);
 
   const label = document.querySelector(".sndModal__photo");
   label.style.opacity = "0";
-}
-
-function resetForm() {
-  sndForm.reset();
-
-  const sndModalImg = document.querySelector(".sndModal__img");
-  const image = document.querySelector(".previewImage");
-  if (image) {
-    sndModalImg.removeChild(image);
-  }
-
-  const label = document.querySelector(".sndModal__photo");
-  label.style.opacity = "1";
 }
 
 fetch(`${host}/categories`)
@@ -185,63 +188,60 @@ fetch(`${host}/categories`)
     });
   });
 
-sndInput.addEventListener("input", greenButton);
-sndTitle.addEventListener("input", greenButton);
-sndCategories.addEventListener("input", greenButton);
+secondModalFile.addEventListener("input", addNewWork);
+secondModalTitle.addEventListener("input", addNewWork);
+secondModalCategories.addEventListener("input", addNewWork);
 
-function greenButton() {
+function addNewWork() {
   if (
-    sndTitle.value !== "" &&
-    sndCategories.value !== "" &&
-    sndInput.value !== ""
+    secondModalTitle.value !== "" &&
+    secondModalCategories.value !== "" &&
+    secondModalFile.value !== ""
   ) {
-    sndValidate.classList.toggle("active");
-    sndError.style.display = "none";
+    secondModalValidationButton.classList.toggle("active");
+    secondModalError.style.display = "none";
   } else {
-    sndError.innerText = "Veuillez renseigner tous les champs";
+    secondModalError.innerText = "Veuillez renseigner tous les champs";
   }
 }
 
-async function validationSndModal() {
-  const sndInput = document.getElementById("photo").files[0];
-  const sndTitle = document.getElementById("title").value;
-  const sndCategories = document.getElementById("categories").value;
-  const gallery = document.querySelector(".gallery");
-  const modal = document.querySelector(".modal");
-  let formData = new FormData();
-  formData.append("image", sndInput);
-  formData.append("title", sndTitle);
-  formData.append("category", sndCategories);
-  const token = localStorage.getItem("token");
+async function validationNewWork() {
+  const formData = new FormData();
+  formData.append("image", document.getElementById("photo").files[0]);
+  formData.append("title", document.getElementById("title").value);
+  formData.append("category", document.getElementById("categories").value);
 
-  await fetch(`${host}/works`, {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${host}/works`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/json",
     },
     body: formData,
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Erreur lors du transfert");
-    })
-    .then(() => {
-      gallery.innerHTML = "";
-      works();
-      worksModal();
-      sndValidate.classList.remove("active");
-      modal.classList.remove("active");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  });
+
+  if (response.ok) {
+    gallery.innerHTML = "";
+    getWorks();
+    getWorksModal();
+    secondModalValidationButton.classList.remove("active");
+    modal.classList.remove("active");
+  } else {
+    alert("Erreur lors du transfert");
+  }
 }
 
-sndForm.addEventListener("submit", (event) => {
+secondModalForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  validationSndModal();
+  if (
+    secondModalTitle.value == "" ||
+    secondModalCategories.value == "" ||
+    secondModalFile.value == ""
+  ) {
+    secondModalError.innerText = "Veuillez renseigner tous les champs";
+    return;
+  }
+  validationNewWork();
   resetForm();
 });

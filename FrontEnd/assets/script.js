@@ -1,6 +1,6 @@
 window.addEventListener("DOMContentLoaded", async () => {
-  await works();
-  worksModal();
-  await categories();
-  connection();
+  await getWorks();
+  getWorksModal();
+  await getCategories();
+  signIn();
 });
