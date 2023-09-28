@@ -206,6 +206,7 @@ function addNewWork() {
 }
 
 async function validationNewWork() {
+  const gallery = document.querySelector(".firstModal__gallery");
   const formData = new FormData();
   formData.append("image", document.getElementById("photo").files[0]);
   formData.append("title", document.getElementById("title").value);
